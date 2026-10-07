@@ -70,10 +70,29 @@ def extract_article_categories(articles):
     }
 
 
-print(extract_titles_traditional(sample_articles))
-print("================================")
-print(extract_titles_comprehension(sample_articles))
-print("================================")
-print(extract_article_summaries(sample_articles))
-print("================================")
-print(extract_article_categories_traditional(sample_articles))
+#print(extract_titles_traditional(sample_articles))
+#print("================================")
+#print(extract_titles_comprehension(sample_articles))
+#print("================================")
+#print(extract_article_summaries(sample_articles))
+#print("================================")
+#print(extract_article_categories_traditional(sample_articles))
+
+# Sets
+
+def extract_sources_traditional(articles):
+    sources = set()
+    for article in articles:
+        if article.get("source") and article.get("source").get("name"):
+            sources.add(article.get("source").get("name"))
+    return sources
+
+def get_sources_name(articles):
+    return {
+        article.get("source").get("name") for article in articles
+        if article.get("source") and article.get("source").get("name")
+    }
+
+print(get_sources_name(sample_articles))
+print("=======")
+print(extract_sources_traditional(sample_articles))
