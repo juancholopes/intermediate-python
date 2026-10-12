@@ -87,12 +87,41 @@ def extract_sources_traditional(articles):
             sources.add(article.get("source").get("name"))
     return sources
 
-def get_sources_name(articles):
+def get_sources(articles):
     return {
         article.get("source").get("name") for article in articles
         if article.get("source") and article.get("source").get("name")
     }
 
-print(get_sources_name(sample_articles))
+print(get_sources(sample_articles))
 print("=======")
 print(extract_sources_traditional(sample_articles))
+
+def categorize_articles(articles):
+    sources = get_sources(articles)
+    results = {}
+
+    for source in sources:
+        if source not in results:
+            results[source] = []
+        for article in articles:
+            if source == article.get("source").get("name"):
+                results[source].append(article)
+
+    return results
+
+
+def categorize(articles):
+    sources = get_sources(articles)
+
+    return {
+        source: [
+            article
+            for article in articles
+            if source == article.get("source").get("name")
+        ]
+        for source in sources
+    }
+
+print(categorize(sample_articles))
+print(categorize_articles(sample_articles))
