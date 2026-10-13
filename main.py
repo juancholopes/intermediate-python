@@ -1,4 +1,5 @@
 import os
+import json
 import urllib.request
 import urllib.parse
 from dotenv import load_dotenv
@@ -13,8 +14,8 @@ def newsapi_client(api_key, query, timeout=30, retries=3 ):
     url= f"{base_url}?{query_string}"
 
     with urllib.request.urlopen(url, timeout=timeout) as response:
-        data = response.read()
-        print(data)
+        data = response.read().decode("utf-8")
+        return json.loads(data)
     return f"newsapi {query} con timeout {timeout}"
 
 def guardian_client(api_key, query, section, from_date, timeout=30, retries=3):
@@ -44,4 +45,7 @@ def fetch_news(api_name, *args, **kwargs):
 
     return client(*args, **config)
 
-fetch_news("newsapi", api_key=api_key, query="Python")
+response_data = fetch_news("newsapi", api_key=api_key, query="Python")
+
+for article in response_data["articles"]:
+    print(article["title"])
